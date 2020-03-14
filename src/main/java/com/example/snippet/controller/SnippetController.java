@@ -2,6 +2,9 @@ package com.example.snippet.controller;
 
 import com.example.snippet.model.Snippet;
 import com.example.snippet.services.SnippetService;
+import com.example.snippet.services.dto.SnippetDTO;
+import com.example.snippet.services.mapper.SnippetMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,13 +21,15 @@ public class SnippetController {
 
 	@RequestMapping(value = "/snippets", method = RequestMethod.GET)
 	@CrossOrigin(origins = "http://localhost:4200")
-	public List<Snippet> getAllSnippets() {
-		return snippetService.getAllSnippets();
+	public ResponseEntity<List<SnippetDTO>> getAllSnippets() {
+		List<Snippet> snippets = snippetService.getAllSnippets();
+		return new ResponseEntity<>(new SnippetMapper().snippetToSnippetDTO(snippets), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/snippets", method = RequestMethod.POST)
-	public Snippet createSnippet(@Valid @RequestBody Snippet snippet) {
-		return snippetService.createSnippet(snippet);
+	public ResponseEntity<Snippet> createSnippet(@Valid @RequestBody SnippetDTO snippetDTO) {
+		Snippet snippet = snippetService.createSnippet(snippetDTO);
+		return new ResponseEntity<Snippet>(snippet, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/snippets/{id}", method = RequestMethod.DELETE)
@@ -33,12 +38,12 @@ public class SnippetController {
 	}
 
 	@RequestMapping(value = "/snippets", method = RequestMethod.PUT)
-	public Snippet updateSnippet(@PathVariable(value = "id") int id, @Valid @RequestBody Snippet snippetInfo) {
-		return snippetService.updateSnippet(id, snippetInfo);
+	public ResponseEntity<Snippet> updateSnippet(@Valid @RequestBody SnippetDTO snippetInfoDTO) {
+		Snippet snippet = snippetService.updateSnippet(snippetInfoDTO);
+		return new ResponseEntity<Snippet>(snippet, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/snippets/{id}", method = RequestMethod.GET)
-	@CrossOrigin(origins = "http://localhost:4200")
 	public Snippet findSnippetById(@PathVariable("id") int id) {
 		return snippetService.findById(id);
 	}

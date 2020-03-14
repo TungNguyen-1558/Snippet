@@ -2,6 +2,7 @@ package com.example.snippet.services;
 
 import com.example.snippet.model.Snippet;
 import com.example.snippet.repository.SnippetRepository;
+import com.example.snippet.services.dto.SnippetDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,23 +26,44 @@ public class SnippetService {
 		return listSnippet;
 	}
 
-	public Snippet createSnippet(@Valid @RequestBody Snippet snippet) {
+	public Snippet createSnippet(@Valid @RequestBody SnippetDTO snippetDTO) {
+		Snippet snippet = new Snippet();
+		snippet.setSnippetName(snippetDTO.getSnippetName());
+		snippet.setDescriptionName(snippetDTO.getDescriptionName());
+		snippet.setDescriptionContent(snippetDTO.getDescriptionContent());
+		snippet.setCode(snippetDTO.getCode());
+		snippet.setCodeLanguage(snippetDTO.getCodeLanguage());
 		return snippetRepository.save(snippet);
 	}
 
-	public Snippet updateSnippet(@PathVariable(value = "id") int id, @Valid @RequestBody Snippet snippetInfo) {
-		Snippet snippet = snippetRepository.getOne(id);
+	public Snippet updateSnippet(@Valid @RequestBody SnippetDTO snippetDTO) {
+		Snippet snippet = snippetRepository.getOne(snippetDTO.getId());
 		if(snippet == null) {
 			return null;
 		}
-		snippet.setSnippetName(snippetInfo.getSnippetName());
-		snippet.setDescriptionName(snippetInfo.getDescriptionName());
-		snippet.setDescriptionContent(snippetInfo.getDescriptionContent());
-		snippet.setCode(snippetInfo.getCode());
-		snippet.setCodeLanguage(snippetInfo.getCodeLanguage());
 
-		Snippet updatedSnippet = snippetRepository.save(snippet);
-		return updatedSnippet;
+		if(snippetDTO.getSnippetName() != null) {
+			snippet.setSnippetName(snippetDTO.getSnippetName());
+		}
+
+		if(snippetDTO.getDescriptionName() != null) {
+			snippet.setDescriptionName(snippetDTO.getDescriptionName());
+		}
+
+		if(snippetDTO.getDescriptionContent() != null) {
+			snippet.setDescriptionContent(snippetDTO.getDescriptionContent());
+		}
+
+		if(snippetDTO.getCode() != null) {
+			snippet.setCode(snippetDTO.getCode());
+		}
+
+		if(snippetDTO.getCodeLanguage() != null) {
+			snippet.setCodeLanguage(snippetDTO.getCodeLanguage());
+		}
+
+		snippetRepository.save(snippet);
+		return snippet;
 	}
 
 	public Snippet deleteSnippet(@PathVariable(value = "id") int id) {
