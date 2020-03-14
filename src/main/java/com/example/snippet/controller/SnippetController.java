@@ -17,7 +17,8 @@ public class SnippetController {
 	}
 
 	@RequestMapping(value = "/snippets", method = RequestMethod.GET)
-	public ResponseEntity<List<Snippet>> getAllSnippets() {
+	@CrossOrigin(origins = "http://localhost:4200")
+	public List<Snippet> getAllSnippets() {
 		return snippetService.getAllSnippets();
 	}
 
@@ -27,16 +28,17 @@ public class SnippetController {
 	}
 
 	@RequestMapping(value = "/snippets/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Snippet> deleteSnippet(@PathVariable("id") int id) {
+	public Snippet deleteSnippet(@PathVariable("id") int id) {
 		return snippetService.deleteSnippet(id);
 	}
 
 	@RequestMapping(value = "/snippets", method = RequestMethod.PUT)
-	public ResponseEntity<Snippet> updateSnippet(@PathVariable(value = "id") int id, @Valid @RequestBody Snippet snippetInfo) {
+	public Snippet updateSnippet(@PathVariable(value = "id") int id, @Valid @RequestBody Snippet snippetInfo) {
 		return snippetService.updateSnippet(id, snippetInfo);
 	}
 
 	@RequestMapping(value = "/snippets/{id}", method = RequestMethod.GET)
+	@CrossOrigin(origins = "http://localhost:4200")
 	public Snippet findSnippetById(@PathVariable("id") int id) {
 		return snippetService.findById(id);
 	}

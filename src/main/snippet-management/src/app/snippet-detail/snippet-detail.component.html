@@ -1,0 +1,24 @@
+<div class="container-fluid" id="snippet-detail" *ngFor="let snippet of snippets">
+  <div class="row">
+    <div class="col">
+      <h1>{{snippet.snippetName}}</h1>
+    </div>
+  </div>
+  <hr/>
+  <div>
+    <p>{{snippet.descriptionName}}<br>{{snippet.descriptionContent}}</p>
+  </div>
+  <div style="height: 150%">
+    <textarea style="width: 100%; height: 100%" class="form-control">
+      {{snippet.code}}
+    </textarea>
+    <div class="dropdown" style="margin-top: 5px">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        Java
+      </button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">C#</a>
+      </div>
+    </div>
+  </div>
+</div>

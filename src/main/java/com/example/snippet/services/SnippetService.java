@@ -17,22 +17,22 @@ public class SnippetService {
 	@Autowired
 	private SnippetRepository snippetRepository;
 
-	public ResponseEntity<List<Snippet>> getAllSnippets() {
+	public List<Snippet> getAllSnippets() {
 		List<Snippet> listSnippet = snippetRepository.findAll();
 		if(listSnippet.isEmpty()) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
+			return null;
 		}
-		return new ResponseEntity<>(listSnippet, HttpStatus.OK);
+		return listSnippet;
 	}
 
 	public Snippet createSnippet(@Valid @RequestBody Snippet snippet) {
 		return snippetRepository.save(snippet);
 	}
 
-	public ResponseEntity<Snippet> updateSnippet(@PathVariable(value = "id") int id, @Valid @RequestBody Snippet snippetInfo) {
+	public Snippet updateSnippet(@PathVariable(value = "id") int id, @Valid @RequestBody Snippet snippetInfo) {
 		Snippet snippet = snippetRepository.getOne(id);
 		if(snippet == null) {
-			return ResponseEntity.notFound().build();
+			return null;
 		}
 		snippet.setSnippetName(snippetInfo.getSnippetName());
 		snippet.setDescriptionName(snippetInfo.getDescriptionName());
@@ -41,22 +41,22 @@ public class SnippetService {
 		snippet.setCodeLanguage(snippetInfo.getCodeLanguage());
 
 		Snippet updatedSnippet = snippetRepository.save(snippet);
-		return ResponseEntity.ok(updatedSnippet);
+		return updatedSnippet;
 	}
 
-	public ResponseEntity<Snippet> deleteSnippet(@PathVariable(value = "id") int id) {
+	public Snippet deleteSnippet(@PathVariable(value = "id") int id) {
 		Snippet snippet = snippetRepository.getOne(id);
 		if(snippet == null) {
-			return ResponseEntity.notFound().build();
+			return null;
 		}
 		snippetRepository.delete(snippet);
-		return ResponseEntity.ok().build();
+		return snippet;
 	}
 
 	public Snippet findById(@PathVariable("id") int id) {
 		Snippet snippet = snippetRepository.getOne(id);
 		if(snippet == null) {
-			ResponseEntity.notFound().build();
+			return null;
 		}
 		return snippet;
 	}

@@ -1,0 +1,5 @@
+<ul class="list-group" id="list-snippet">
+  <li *ngFor="let snippet of snippets">
+    <a class="list-group-item list-group-item-action" [routerLink]="['/snippets/snippet.id']">{{snippet.snippetName}}</a>
+  </li>
+</ul>
